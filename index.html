@@ -87,7 +87,7 @@
         <section class="weather-content__result">
           <h2 class="visually-hidden">Результаты сортировки</h2>
           <div class="weather-content__small-cards">
-            <div class="small-card small-card--shadow">
+            <!-- <div class="small-card small-card--shadow">
               <span class="small-card__city">
                 Чебоксары
               </span>
@@ -235,13 +235,13 @@
               </span>
               <span class="small-card__temperature">+17°</span>
               <span class="icon icon--strips-small"></span>
-            </div>
+            </div> -->
           </div>
           <div class="weather-content__big-cards">
             <div class="weather-content__help">
               Перетащите сюда города, погода в которых вам интересна
             </div>
-            <div class="big-card">
+            <!-- <div class="big-card">
               <div class="big-card__header">
                 <span class="icon icon--strips-big"></span>
                 <span class="big-card__city">Великий Новгород</span>
@@ -361,15 +361,18 @@
                 </div>
                 <span class="big-card__temperature">+12°</span>
               </div>
-            </div>
+            </div> -->
           </div>
         </section>
       </div>
-      <div class="weather-app__map weather-map">
+      <div class="weather-app__map weather-map" id="weather-map">
         <span class="pin pin--temporarily"></span>
       </div>
     </section>
   </main>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=429223ae-4813-4443-a899-74c95a05e251&lang=ru_RU"
+    type="text/javascript">
+  </script>
   <script src="js/main.js" type="module"></script>
 </body>
 
