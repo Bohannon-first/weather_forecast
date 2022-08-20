@@ -6,6 +6,10 @@
   border-radius: 2px;
 }
 
+.input-wrapper--search {
+  position: relative;
+}
+
 .input-wrapper--search input {
   width: 254px;
   padding: 8px 20px;
@@ -128,4 +132,64 @@
 .input-wrapper--radio input:checked:focus + label,
 .input-wrapper--checkbox input:checked:focus + label {
   background-color: var(--color-label-hover-checked);
+}
+
+/* Стилизация кнопки очистки поля ввода */
+[id="reset-value"] {
+position: absolute;
+top: 12px;
+right: 10px;
+border: none;
+border-radius: 50%;
+width: 16px;
+height: 16px;
+background-color: var(--color-blue-main);
+cursor: pointer;
+display: none;
+opacity: 0;
+animation: appearance 1.5s forwards;
+}
+
+@keyframes appearance {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+[id="reset-value"]::before {
+  position: absolute;
+  content: '';
+  width: 11px;
+  height: 2px;
+  top: 7px;
+  left: 3px;
+  background-color: var(--color-white);
+  transform: rotate(45deg);
+}
+
+[id="reset-value"]::after {
+  position: absolute;
+  content: '';
+  width: 11px;
+  height: 2px;
+  top: 7px;
+  left: 3px;
+  background-color: var(--color-white);
+  transform: rotate(-45deg);
+}
+
+[id="reset-value"]:hover {
+  background-color: var(--color-white);
+  transition-duration: .5s;
+}
+
+[id="reset-value"]:hover::before,
+[id="reset-value"]:hover::after {
+  background-color: var(--color-blue-main);
+  transition-duration: .5s;
+}
+
+[id="reset-value"]:active::before,
+[id="reset-value"]:active::after {
+  opacity: .3;
+  transition-duration: .1s;
 }

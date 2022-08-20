@@ -17,7 +17,7 @@
       <div class="weather-app__content weather-content">
         <section class="sort-form weather-content__sort">
           <h2 class="visually-hidden">Форма сортировки</h2>
-          <form action="#" method="GET">
+          <form action="#" method="GET" autocomplete="off">
             <div class="sort-form__group">
               <div class="sort-form__input-wrapper input-wrapper input-wrapper--radio">
                 <input id="alphabet-sort" type="radio" name="alphabet-sort" value="alphabet-sort" checked />
@@ -36,6 +36,7 @@
               <div class="sort-form__input-wrapper input-wrapper input-wrapper--search">
                 <input id="search" type="search" name="city-search" placeholder="Название города" />
                 <label for="search" aria-label="Поиск городов"></label>
+                <button id="reset-value" type="button" aria-label="Кнопка очистки поля ввода"></button>
               </div>
             </div>
             <div class="sort-form__group">
