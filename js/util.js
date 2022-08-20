@@ -1,23 +1,5 @@
 const ALERT_SHOW_TIME = 3000;
 
-// Получение рандомного числа из диапазона
-const getRandomNumber = (minNum, maxNum, lengthNum = 0) => {
-  if (minNum < 0) {
-    return 'Ошибка. Вы ввели отрицательное число. Число должно быть положительное.';
-  }
-  else if (maxNum <= minNum) {
-    return 'Ошибка. Конечное число меньше или равно начальному.';
-  }
-  else if (minNum >= maxNum) {
-    return 'Ошибка. Начальное число не должно быть больше или равно конечному.';
-  }
-  else {
-    const randomNumber = minNum + Math.random() * (maxNum - minNum);
-    return +randomNumber.toFixed(lengthNum);
-  }
-};
-getRandomNumber();
-
 // Блок с возможной ошибкой запроса данных с сервера
 const showAlert = () => {
   const alertContainer = document.createElement('div');
