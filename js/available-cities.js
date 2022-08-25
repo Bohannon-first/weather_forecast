@@ -6,13 +6,12 @@ const listSmallCardsWeather = document.querySelector('.weather-content__small-ca
 // Получаем доступные города
 const getAvailableCities = (city) => {
   // listSmallCardsWeather.innerHTML = '';
-  // console.log(city);
+  console.log(city);
 
   // Создаем разметку для доступных городов
-  const getCity = `<div class="small-card">
+  const getCity = `<div class="small-card" draggable="true">
                     <span class="small-card__city">${city.name}</span>
-                    <span class="small-card__temperature">${convertToCelsius(city.main.temp)}
-                    &#8451; </span>
+                    <span class="small-card__temperature">${convertToCelsius(city.main.temp)}&#176;</span>
                     <span class="icon icon--strips-small"></span>
                   </div>`;
 
@@ -28,4 +27,4 @@ const arrayCities = ['Москва', 'Санкт-Петербург', 'Сочи'
 
 // console.log(arrayCities.length);
 
-export{getAvailableCities, arrayCities};
+export{getAvailableCities, arrayCities, listSmallCardsWeather};

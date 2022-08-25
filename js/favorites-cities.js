@@ -1,0 +1,135 @@
+import {listSmallCardsWeather} from './available-cities.js';
+import {arrayDataCities} from './server.js';
+import {convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather} from './util.js';
+
+const listBigCardsWeather = document.querySelector('.weather-content__big-cards');
+const emptyCardVisual = document.createElement('div');
+emptyCardVisual.classList.add('big-card', 'big-card--empty');
+
+// Функция создания разметки карточки для избранного города
+const getRenderFavouriteCity = (movableElement, arrayData) => {
+  const cityName = movableElement.querySelector('.small-card__city');
+  for (let i = 0; i < arrayData.length; i++) {
+    if (cityName.textContent === arrayData[i].name) {
+      const foundCity = arrayData[i];
+      const newFavouriteCity = `<div class="big-card" draggable="true">
+      <div class="big-card__header">
+        <span class="icon icon--strips-big"></span>
+        <span class="big-card__city">${foundCity.name}</span>
+      </div>
+      <div class="big-card__content">
+        <div class="big-card__content-wrapper">
+          <div class="big-card__weather-conditions">
+            <span class="icon icon--${renderIconWeather(foundCity)}"></span>
+            <span class="icon-description">${getDescriptionWeather(foundCity)}</span>
+          </div>
+          <div class="big-card__wind">
+            <span class="icon icon--wind"></span>
+            <span class="big-card__wind-info">Ветер ${getWindDirection(foundCity.wind.deg)}, ${Math.round(foundCity.wind.speed)} м/с</span>
+          </div>
+        </div>
+        <span class="big-card__temperature">${convertToCelsius(foundCity.main.temp)}&#176;</span>
+      </div>`;
+      // renderIconWeather(foundCity);
+      return newFavouriteCity;
+    }
+  }
+};
+
+// Функция создания разметки карточки для простого города
+const getRenderSimpleCity = (movableElement, arrayData) => {
+  const cityName = movableElement.querySelector('.big-card__city');
+  for (let i = 0; i < arrayData.length; i++) {
+    if (cityName.textContent === arrayData[i].name) {
+      const foundCity = arrayData[i];
+      const newSimpleCity = `<div class="small-card" draggable="true">
+        <span class="small-card__city">${foundCity.name}</span>
+        <span class="small-card__temperature">${convertToCelsius(foundCity.main.temp)}&#176;</span>
+        <span class="icon icon--strips-small"></span>
+      </div>`;
+
+      return newSimpleCity;
+    }
+  }
+};
+
+// Перемещение элементов в избранное
+let movableElementToFavorites = '';
+listSmallCardsWeather.addEventListener('dragstart', (evt) => {
+  movableElementToFavorites = evt.target;
+  movableElementToFavorites.style.backgroundColor = 'var(--color-shadow-main)';
+  listBigCardsWeather.appendChild(emptyCardVisual);
+});
+
+listSmallCardsWeather.addEventListener('dragend', () => {
+  movableElementToFavorites.style.backgroundColor = '';
+  listBigCardsWeather.removeChild(emptyCardVisual);
+});
+
+listBigCardsWeather.addEventListener('drop', (evt) => {
+  evt.preventDefault();
+  if (evt.target.classList.contains('weather-content__big-cards') || evt.target.classList.contains('weather-content__help')) {
+    if (movableElementToFavorites) {
+
+      movableElementToFavorites.parentElement.removeChild(movableElementToFavorites);
+      // getFavouriteCity(movableElementToFavorites, arrayDataCities);
+      listBigCardsWeather.insertAdjacentHTML('beforeend', getRenderFavouriteCity(movableElementToFavorites, arrayDataCities));
+      // evt.target.appendChild(movableElementToFavorites);
+      // movableElementToFavorites.style.backgroundColor = '';
+      if (emptyCardVisual) {
+
+        listBigCardsWeather.removeChild(emptyCardVisual);
+      }
+    }
+  }
+});
+
+// Перемещение элементов из избранного обратно в доступные
+let movableElementToAvailable = '';
+listBigCardsWeather.addEventListener('dragstart', (evt) => {
+  movableElementToAvailable = evt.target;
+  // console.log(movableElementToAvailable);
+});
+
+listSmallCardsWeather.addEventListener('dragover', (evt) => {
+  evt.preventDefault();
+});
+
+listSmallCardsWeather.addEventListener('drop', (evt) => {
+  console.log(evt.target);
+  if (evt.target.classList.contains('weather-content__small-cards') || evt.target.classList.contains('small-card') || evt.target.classList.contains('small-card__city') || evt.target.classList.contains('small-card__temperature') || evt.target.classList.contains('icon--strips-small')) {
+    if (movableElementToAvailable) {
+      movableElementToAvailable.parentElement.removeChild(movableElementToAvailable);
+      // getRenderSimpleCity(movableElementToAvailable, arrayDataCities);
+      listSmallCardsWeather.insertAdjacentHTML('beforeend', getRenderSimpleCity(movableElementToAvailable, arrayDataCities));
+      // evt.target.appendChild(movableElementToAvailable);
+    }
+  }
+});
+
+// Перемещение элементов внутри избранного
+listBigCardsWeather.addEventListener('dragover', (evt) => {
+  evt.preventDefault();
+
+  // Находим элемент, над которым в данный момент находится курсор
+  const currentElement = evt.target;
+
+  if (movableElementToAvailable) {
+  // Проверяем, что событие сработало:
+  // 1. не на том элементе, который мы перемещаем,
+  // 2. именно на элементе списка
+    const isMovable = movableElementToAvailable !== currentElement && currentElement.classList.contains('big-card');
+
+    // Если нет, прерываем выполнение функции
+    if (!isMovable) {
+      return;
+    }
+
+    // Находим элемент, перед которым будем вставлять
+    const nextElement = (currentElement === movableElementToAvailable.nextElementSibling) ?
+      currentElement.nextElementSibling :
+      currentElement;
+
+    listBigCardsWeather.insertBefore(movableElementToAvailable, nextElement);
+  }
+});

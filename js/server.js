@@ -1,5 +1,7 @@
 import {showAlert} from './util.js';
 
+
+const arrayDataCities = [];
 const getData = (onSuccess, array) => {
 
   for (let i = 0; i < array.length; i++) {
@@ -13,10 +15,20 @@ const getData = (onSuccess, array) => {
       })
       .then((jsonCity) => {
         onSuccess(jsonCity);
+        arrayDataCities.push(jsonCity);
       })
       .catch((err) => showAlert(err));
   }
-
 };
 
-export {getData};
+
+
+// setTimeout(() => {
+//   console.log(arrayDataCities);
+// }, 0);
+
+
+
+
+
+export {getData, arrayDataCities};
