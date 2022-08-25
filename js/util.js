@@ -29,4 +29,30 @@ const convertToCelsius = (valueKelvin) => {
   return celsius > 0 ? `+${celsius}` : celsius;
 };
 
-export {showAlert, convertToCelsius};
+// Расчет направления ветра, перевод из градусов
+const getWindDirection = (degrees) => {
+  if (degrees > 337.5) {return 'С';}
+  if (degrees > 292.5) {return 'СЗ';}
+  if (degrees > 247.5) {return 'З';}
+  if (degrees > 202.5) {return 'ЮЗ';}
+  if (degrees > 157.5) {return 'Ю';}
+  if (degrees > 122.5) {return 'ЮВ';}
+  if (degrees > 67.5) {return 'В';}
+  if (degrees > 22.5) {return 'СВ';}
+  return 'С';
+};
+
+// Отрисовка правильно иконки погоды
+const renderIconWeather = function (city) {
+  if (city.weather[0].main === 'Clear') {return 'sunny';}
+  if (city.weather[0].description === 'небольшая облачность') {return 'few-clouds';}
+  if (city.weather[0].main === 'Clouds') {return 'cloudy';}
+  if (city.weather[0].main === 'Rain') {return 'rainy';}
+  if (city.weather[0].main === 'Snow') {return 'snowy';}
+  if (city.weather[0].main === 'Thunderstorm') {return 'stormy';}
+};
+
+// Получение описания погоды
+const getDescriptionWeather = (city) => city.weather[0].description;
+
+export {showAlert, convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather};

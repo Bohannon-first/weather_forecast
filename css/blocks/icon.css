@@ -55,16 +55,18 @@
   background-image: url("../../img/icon/icon-snowy.svg");
 }
 
-.icon--stormy {
-  background-image: url("../../img/icon/icon-stormy.svg");
+.icon--few-clouds {
+  background-image: url("../../img/icon/icon-few-clouds.png");
+  width: 35px;
+  height: 35px;
 }
 
-.icon--blizzard {
+.icon--stormy {
   background-image: url("../../img/icon/icon-blizzard.svg");
 }
 
-.icon--metorite {
-  background-image: url("../../img/icon/icon-metorite.svg");
+.icon--meteorite {
+  background-image: url("../../img/icon/icon-meteorite.svg");
 }
 
 .icon--wind {

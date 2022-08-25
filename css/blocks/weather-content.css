@@ -49,7 +49,8 @@
 
   line-height: 32px;
   text-align: center;
-  color: var(--color-text-help);
+  color: var(--color-blue-deep);
+  font-weight: 500;
 }
 
 .weather-content__sort .sort-form__group:nth-child(1) {
