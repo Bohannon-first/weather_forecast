@@ -39,4 +39,4 @@ const getSortedListAlphabetReverse = () => {
 
 btnSortAlphabetReverse.addEventListener('click', getSortedListAlphabetReverse);
 
-export {getSortedListAlphabet};
+export {getSortedListAlphabet, getSortedListAlphabetReverse};
