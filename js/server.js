@@ -21,14 +21,4 @@ const getData = (onSuccess, array) => {
   }
 };
 
-
-
-// setTimeout(() => {
-//   console.log(arrayDataCities);
-// }, 0);
-
-
-
-
-
 export {getData, arrayDataCities};

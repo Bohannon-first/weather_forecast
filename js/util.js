@@ -42,7 +42,7 @@ const getWindDirection = (degrees) => {
   return 'С';
 };
 
-// Отрисовка правильно иконки погоды
+// Отрисовка правильной иконки погоды
 const renderIconWeather = function (city) {
   if (city.weather[0].main === 'Clear') {return 'sunny';}
   if (city.weather[0].description === 'небольшая облачность') {return 'few-clouds';}
@@ -50,6 +50,7 @@ const renderIconWeather = function (city) {
   if (city.weather[0].main === 'Rain') {return 'rainy';}
   if (city.weather[0].main === 'Snow') {return 'snowy';}
   if (city.weather[0].main === 'Thunderstorm') {return 'stormy';}
+  if (city.weather[0].description === 'туман') {return 'mist';}
 };
 
 // Получение описания погоды
