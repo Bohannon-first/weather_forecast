@@ -173,3 +173,5 @@ const removeCardFavouriteCity = (evt) => {
 };
 
 listBigCardsWeather.addEventListener('mousedown', removeCardFavouriteCity);
+
+export {listBigCardsWeather};
