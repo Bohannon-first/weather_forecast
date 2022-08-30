@@ -40,6 +40,6 @@
   background-color: var(--color-blue-main);
 }
 
-.hidden-block {
+.big-card.hidden-block {
   display: none;
 }

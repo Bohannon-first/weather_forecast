@@ -18,7 +18,7 @@
         <section class="sort-form weather-content__sort">
           <h2 class="visually-hidden">Форма сортировки</h2>
           <form action="#" method="GET" autocomplete="off">
-            <div class="sort-form__group">
+            <div class="sort-form__group sort-form__group--sorting">
               <div class="sort-form__input-wrapper input-wrapper input-wrapper--radio" title="Сортировка по алфавиту">
                 <input id="alphabet-sort" type="radio" name="alphabet-sort" value="alphabet-sort" checked />
                 <label for="alphabet-sort" aria-label="Сортировка по алфавиту">
@@ -33,51 +33,58 @@
                 </label>
               </div>
             </div>
-            <div class="sort-form__group">
+            <div class="sort-form__group sort-form__group--search">
               <div class="sort-form__input-wrapper input-wrapper input-wrapper--search">
                 <input id="search" type="search" name="city-search" placeholder="Название города" />
                 <label for="search" aria-label="Поиск городов"></label>
                 <button id="reset-value" type="button" aria-label="Кнопка очистки поля ввода"></button>
               </div>
             </div>
-            <div class="sort-form__group">
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Дождь">
+            <div class="sort-form__group sort-form__group--filters">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Дождь"
+                data-weather="rainy">
                 <input id="rainy" name="weather-conditions" type="checkbox" value="rainy">
                 <label aria-label="Дождливо" for="rainy">
                   <span class="icon icon--rainy"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Солнце">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Солнечно"
+                data-weather="sunny">
                 <input id="sunny" name="weather-conditions" type="checkbox" value="sunny">
                 <label aria-label="Солнечно" for="sunny">
                   <span class="icon icon--sunny"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Небольшая облачность">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Небольшая облачность"
+                data-weather="few-clouds">
                 <input id="few-clouds" name="weather-conditions" type="checkbox" value="few-clouds">
                 <label aria-label="Небольшая облачность" for="few-clouds">
                   <span class="icon icon--few-clouds"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Облачно">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Облачно"
+                data-weather="cloudy">
                 <input id="cloudy" name="weather-conditions" type="checkbox" value="cloudy">
                 <label aria-label="Облачно" for="cloudy">
                   <span class="icon icon--cloudy"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Снег">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Снег"
+                data-weather="snowy">
                 <input id="snowy" name="weather-conditions" type="checkbox" value="snowy">
                 <label aria-label="Снежно" for="snowy">
                   <span class="icon icon--snowy"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Гроза">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Гроза"
+                data-weather="stormy">
                 <input id="stormy" name="weather-conditions" type="checkbox" value="stormy">
                 <label aria-label="Гроза" for="stormy">
                   <span class="icon icon--stormy"></span>
                 </label>
               </div>
-              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Туман">
+              <div class="sort-form__input-wrapper input-wrapper input-wrapper--checkbox" title="Туман"
+                data-weather="mist">
                 <input id="mist" name="weather-conditions" type="checkbox" value="mist">
                 <label aria-label="Туман" for="mist">
                   <span class="icon icon--mist"></span>
