@@ -43,3 +43,13 @@
 .big-card.hidden-block {
   display: none;
 }
+
+.big-card.visible-block {
+  animation: showBigCard 300ms;
+}
+
+/* Анимация показа большой карточки с избранным городом */
+@keyframes showBigCard {
+  0% {transform: translateX(-360px);}
+  100% {transform: translateX(0);}
+}

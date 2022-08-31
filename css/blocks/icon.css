@@ -71,6 +71,12 @@
   height: 40px;
 }
 
+.icon--all-cities {
+  background-image: url('../../img/icon/icon-all-cities.png');
+  width: 30px;
+  height: 30px;
+}
+
 .icon--wind {
   background-image: url("../../img/icon/icon-wind.svg");
 }
