@@ -118,11 +118,11 @@
   pointer-events: none;
 }
 
-.input-wrapper--radio input:checked + label,
+/* .input-wrapper--radio input:checked + label,
 .input-wrapper--checkbox input:checked + label {
   background-color: var(--color-label-active);
   box-shadow: none;
-}
+} */
 
 .input-wrapper--radio input:checked + label:hover,
 .input-wrapper--checkbox input:checked + label:hover {
