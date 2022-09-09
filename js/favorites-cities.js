@@ -2,6 +2,7 @@ import {listSmallCardsWeather} from './available-cities.js';
 import {arrayDataCities} from './server.js';
 import {convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather} from './util.js';
 import {getSortedListAlphabet, getSortedListAlphabetReverse} from './sorting.js';
+import {storagePlacemarks, removePlacemark, myMap} from './map.js';
 
 const listBigCardsWeather = document.querySelector('.weather-content__big-cards');
 const emptyCardVisual = document.createElement('div');
@@ -98,6 +99,17 @@ listSmallCardsWeather.addEventListener('drop', (evt) => {
     try {
       movableElementToAvailable.parentElement.removeChild(movableElementToAvailable);
       listSmallCardsWeather.insertAdjacentHTML('beforeend', getRenderSimpleCity(movableElementToAvailable, arrayDataCities));
+      removePlacemark(movableElementToAvailable, storagePlacemarks);
+      try {
+        // Центровка карты по всем точкам
+        myMap.setBounds(myMap.geoObjects.getBounds(), {
+          checkZoomRange: true,
+          zoomMargin: 20
+        });
+      } catch (err) {
+        // Комментарий, чтобы eslint не ругался на пустой блок
+      }
+      // console.log(myMap.geoObjects);
       getSortedListAlphabet();
       getSortedListAlphabetReverse();
     } catch (err) {
@@ -163,15 +175,69 @@ const removeCardFavouriteCity = (evt) => {
       setTimeout(()=> {
         bigCardElem.remove();
         listSmallCardsWeather.insertAdjacentHTML('beforeend', getRenderSimpleCity(bigCardElem, arrayDataCities));
+        removePlacemark(bigCardElem, storagePlacemarks);
+        try {
+          // Центровка карты по всем точкам
+          myMap.setBounds(myMap.geoObjects.getBounds(), {
+            checkZoomRange: true,
+            zoomMargin: 20
+          });
+        } catch (err) {
+          // Комментарий, чтобы eslint не ругался на пустой блок
+        }
         const arraySmallCard = document.querySelectorAll('.small-card');
         deleteDuplicateCities(arraySmallCard);
         getSortedListAlphabet();
         getSortedListAlphabetReverse();
-      }, 300);
+      }, 401);
     });
   }
 };
 
 listBigCardsWeather.addEventListener('mousedown', removeCardFavouriteCity);
 
-export {listBigCardsWeather};
+// Подсветка маркера города на карте при наведении на избранный город
+const highlightCityOnMapTurnedOn = (evt) => {
+  if (evt.target.closest('.big-card')) {
+    const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
+    storagePlacemarks._objects.forEach((object) => {
+      if (bigCardNameCity === object.properties._data.hintContent) {
+        object.options.set('iconImageHref', './img/icon/icon-pin-red.png');
+      }
+    });
+  }
+};
+
+listBigCardsWeather.addEventListener('mouseover', highlightCityOnMapTurnedOn);
+
+// Удаление подсветки маркера города в момент ухода курсора с города
+const highlightCityOnMapTurnedOff = (evt) => {
+  if (evt.target.closest('.big-card')) {
+    const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
+    storagePlacemarks._objects.forEach((object) => {
+      if (bigCardNameCity === object.properties._data.hintContent) {
+        object.options.set('iconImageHref', './img/icon/icon-pin-blue.png');
+      }
+    });
+  }
+};
+
+listBigCardsWeather.addEventListener('mouseout', highlightCityOnMapTurnedOff);
+
+// Центрирование маркера на карте при клике на городе в избранном
+const getCenterOnMapClick = (evt) => {
+  if (evt.target.closest('.big-card')) {
+    const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
+    storagePlacemarks._objects.forEach((object) => {
+      if (bigCardNameCity === object.properties._data.hintContent) {
+        myMap.setCenter([object.geometry._coordinates[0], object.geometry._coordinates[1]], 10, {
+          checkZoomRange: true
+        });
+      }
+    });
+  }
+};
+
+listBigCardsWeather.addEventListener('click', getCenterOnMapClick);
+
+export {listBigCardsWeather, movableElementToFavorites};

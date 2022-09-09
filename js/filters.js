@@ -17,20 +17,9 @@ const onListFiltersClick = (evt) => {
       const iconWeather = city.querySelector(`.icon--${currentFilterValue}`);
 
       if (city.classList.contains('hidden-block')) {
-        city.classList.add('visible-block');
-        setTimeout(() => {
-          city.classList.remove('hidden-block');
-
-          city.classList.remove('big-card--animation-remove');
-          city.classList.remove('visible-block');
-        }, 301);
-      }
-      if (!iconWeather) {
-        city.classList.add('big-card--animation-remove');
-        setTimeout(() => {
-          city.classList.toggle('hidden-block');
-          city.classList.remove('big-card--animation-remove');
-        }, 301);
+        city.classList.remove('hidden-block');
+      } if (!iconWeather) {
+        city.classList.toggle('hidden-block');
       }
     });
   }
@@ -42,12 +31,7 @@ filtersContainer.addEventListener('click', onListFiltersClick);
 const onBtnDisableFiltersClick = () => {
   const favouriteCitiesList = listBigCardsWeather.querySelectorAll('.big-card');
   favouriteCitiesList.forEach((item) => {
-    item.classList.add('visible-block');
-    item.classList.remove('.big-card--animation-remove');
-    setTimeout(() => {
-      item.classList.remove('hidden-block');
-      item.classList.remove('visible-block');
-    }, 301);
+    item.classList.remove('hidden-block');
   });
 };
 

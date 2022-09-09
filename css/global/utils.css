@@ -45,7 +45,7 @@
 }
 
 .big-card.visible-block {
-  animation: showBigCard 300ms;
+  animation: showBigCard 400ms;
 }
 
 /* Анимация показа большой карточки с избранным городом */
