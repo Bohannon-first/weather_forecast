@@ -210,7 +210,7 @@
 }
 
 .big-card--animation-remove {
-  animation: removeBigCard 300ms;
+  animation: removeBigCard 400ms;
 }
 
 /* Анимация удаления большой карточки с избранным городом */
