@@ -15,7 +15,7 @@ const init = () => {
     controls: []
   });
 
-  // Добавление маркеров на карту
+  // Добавление меток на карту
   listBigCardsWeather.addEventListener('drop', (evt) => {
     evt.preventDefault();
     const cityForPlacemark = movableElementToFavorites.querySelector('.small-card__city').textContent;
@@ -32,22 +32,15 @@ const init = () => {
         myMap.geoObjects
           .add(myPlacemark);
 
+        // Добавление меток в выборку, с последующим добавлением на карту
         storagePlacemarks = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
-        // console.log(storagePlacemarks);
 
+        // Центрирование всех меток на экране
         myMap.setBounds(myMap.geoObjects.getBounds(), {
           checkZoomRange: true,
-          zoomMargin: 20
+          zoomMargin: 30
         });
 
-        if (storagePlacemarks._objects === 1) {
-          // console.log('Один элемент на карте');
-
-          myMap.setZoom(10, {});
-          // myMap.setCenter([arrayPlacemark[0].geometry._coordinates[0], arrayPlacemark[0].geometry._coordinates[1]], 10, {
-          //   checkZoomRange: true
-          // });
-        }
         // Изменение цвета меток при наведении курсора на метку
         myPlacemark.events.add('mouseenter', (event) => {
           const object = event.get('target');
@@ -96,7 +89,7 @@ const init = () => {
       }
     });
   });
-  // При двойном щелчке зума не будет
+  // При двойном клике по карте зума не будет
   myMap.events.add('dblclick', (evt) => {
     evt.preventDefault();
   });
@@ -108,13 +101,45 @@ const removePlacemark = (element, storage) => {
   storage._objects.forEach((object) => {
     if (cityName === object.properties._data.hintContent) {
       myMap.geoObjects.remove(object);
+      storage = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
+      if (!storage._objects.length) {
+        myMap.setCenter([55.7, 37.6], 10, {
+          checkZoomRange: true
+        });
+        // Проверка на наличие одной метки на карте
+      } else if (storage._objects.length === 1) {
+        // Установление определенного масштаба карты, когда осталась одна метка на карте
+        myMap.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], 10, {
+          checkZoomRange: true
+        });
+        const centerAndZoom = myMap.util.bounds.getCenterAndZoom(bounds, myMap.container.getSize());
+        myMap.setCenter(centerAndZoom.center, centerAndZoom.zoom, {
+          checkZoomRange: true
+        });
+      }
     }
-
   });
+};
+
+// Проверка, одна ли метка на карте
+const isOnePlacemark = (storage, map) => {
+  if (storage._objects.length === 1) {
+    map.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], 10, {
+      checkZoomRange: true
+    });
+    try {
+      const centerAndZoom = map.util.bounds.getCenterAndZoom(bounds, map.container.getSize());
+      map.setCenter(centerAndZoom.center, centerAndZoom.zoom, {
+        checkZoomRange: true
+      });
+    } catch (err) {
+      // Комментарий, чтобы eslint не ругался на пустой блок
+    }
+  }
 };
 
 // Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
 // eslint-disable-next-line no-undef
 ymaps.ready(init);
 
-export {storagePlacemarks, removePlacemark, myMap};
+export {storagePlacemarks, removePlacemark, isOnePlacemark, myMap};
