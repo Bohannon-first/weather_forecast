@@ -2,6 +2,23 @@
 import {listBigCardsWeather, movableElementToFavorites} from './favorites-cities.js';
 import {arrayDataCities} from './server.js';
 
+// Координаты города по умолчанию и когда нет меток на карте
+const COORDINATES_MAIN_CITY = {
+  latitude: 55.7,
+  longitude: 37.6,
+};
+
+// Зум карты
+const MAIN_ZOOM = 10;
+// Главная метка
+const MAIN_PIN = './img/icon/icon-pin-blue.png';
+// Метка при наведении
+const SECOND_PIN = './img/icon/icon-pin-red.png';
+// Размеры главной метки
+const MAIN_PIN_SIZE = {
+  width: 52,
+  height: 52,
+};
 // Хранилище для геообъектов(меток)
 let storagePlacemarks = null;
 // Карта
@@ -10,8 +27,8 @@ let myMap = null;
 // Функция инициализации карты
 const init = () => {
   myMap = new ymaps.Map('weather-map', {
-    center: [55.7, 37.6],
-    zoom: 10,
+    center: [COORDINATES_MAIN_CITY.latitude, COORDINATES_MAIN_CITY.longitude],
+    zoom: MAIN_ZOOM,
     controls: []
   });
 
@@ -24,8 +41,8 @@ const init = () => {
         const myPlacemark = new ymaps.Placemark([city.coord.lat, city.coord.lon], {hintContent: city.name},
           {
             iconLayout: 'default#image',
-            iconImageHref: './img/icon/icon-pin-blue.png',
-            iconImageSize: [52, 52],
+            iconImageHref: MAIN_PIN,
+            iconImageSize: [MAIN_PIN_SIZE.width, MAIN_PIN_SIZE.height],
             iconImageOffset: [-26, -52]
           });
 
@@ -44,7 +61,7 @@ const init = () => {
         // Изменение цвета меток при наведении курсора на метку
         myPlacemark.events.add('mouseenter', (event) => {
           const object = event.get('target');
-          object.options.set('iconImageHref', './img/icon/icon-pin-red.png');
+          object.options.set('iconImageHref', SECOND_PIN);
 
           // Изменение подсветки избранных городов при наведении на метки
           const bigCardCities = listBigCardsWeather.querySelectorAll('.big-card');
@@ -63,7 +80,7 @@ const init = () => {
         // Изменение цвета меток при уводе курсора с метки
         myPlacemark.events.add('mouseleave', (event) => {
           const object = event.get('target');
-          object.options.set('iconImageHref', './img/icon/icon-pin-blue.png');
+          object.options.set('iconImageHref', MAIN_PIN);
 
           // Возвращение подсветки избранных городов к первоначальной при уводе курсора с метки
           const bigCardCities = listBigCardsWeather.querySelectorAll('.big-card');
@@ -82,7 +99,7 @@ const init = () => {
         // Зум при клике на метки
         myPlacemark.events.add('click', (e) => {
           const object = e.get('target');
-          myMap.setCenter([object.geometry._coordinates[0], object.geometry._coordinates[1]], 10, {
+          myMap.setCenter([object.geometry._coordinates[0], object.geometry._coordinates[1]], MAIN_ZOOM, {
             checkZoomRange: true
           });
         });
@@ -103,13 +120,13 @@ const removePlacemark = (element, storage) => {
       myMap.geoObjects.remove(object);
       storage = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
       if (!storage._objects.length) {
-        myMap.setCenter([55.7, 37.6], 10, {
+        myMap.setCenter([COORDINATES_MAIN_CITY.latitude, COORDINATES_MAIN_CITY.longitude], MAIN_ZOOM, {
           checkZoomRange: true
         });
         // Проверка на наличие одной метки на карте
       } else if (storage._objects.length === 1) {
         // Установление определенного масштаба карты, когда осталась одна метка на карте
-        myMap.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], 10, {
+        myMap.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], MAIN_ZOOM, {
           checkZoomRange: true
         });
         const centerAndZoom = myMap.util.bounds.getCenterAndZoom(bounds, myMap.container.getSize());
@@ -124,7 +141,7 @@ const removePlacemark = (element, storage) => {
 // Проверка, одна ли метка на карте
 const isOnePlacemark = (storage, map) => {
   if (storage._objects.length === 1) {
-    map.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], 10, {
+    map.setCenter([storage._objects[0].geometry._coordinates[0], storage._objects[0].geometry._coordinates[1]], MAIN_ZOOM, {
       checkZoomRange: true
     });
     try {

@@ -4,6 +4,9 @@ import {convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWea
 import {getSortedListAlphabet, getSortedListAlphabetReverse} from './sorting.js';
 import {storagePlacemarks, removePlacemark, isOnePlacemark, myMap} from './map.js';
 
+// Количество пикселей при прокрутке вниз при добавлении городов в избранное
+const SCROLLING_PIXELS_BY_VERTICAL = 9999;
+
 const listBigCardsWeather = document.querySelector('.weather-content__big-cards');
 const emptyCardVisual = document.createElement('div');
 emptyCardVisual.classList.add('big-card', 'big-card--empty');
@@ -62,6 +65,12 @@ listSmallCardsWeather.addEventListener('dragstart', (evt) => {
   movableElementToFavorites = evt.target;
   movableElementToFavorites.style.backgroundColor = 'var(--color-shadow-main)';
   listBigCardsWeather.appendChild(emptyCardVisual);
+
+  // Автоматическая прокрутка вниз при добавлении городов в избранное
+  listBigCardsWeather.scrollTo({
+    top: SCROLLING_PIXELS_BY_VERTICAL,
+    behavior: 'smooth'
+  });
 });
 
 listSmallCardsWeather.addEventListener('dragend', () => {
@@ -80,7 +89,7 @@ listBigCardsWeather.addEventListener('drop', (evt) => {
       }
       setTimeout(() => {
         isOnePlacemark(storagePlacemarks, myMap);
-      }, 200);
+      }, 100);
     } catch (err) {
       // Комментарий, чтобы eslint не ругался на пустой блок
     }
