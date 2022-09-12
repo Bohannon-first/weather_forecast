@@ -24,6 +24,20 @@ let storagePlacemarks = null;
 // Карта
 let myMap = null;
 
+// Удаление дубликатов меток с карты
+const deleteDuplicatePlacemarks = (storage) => {
+  for (let i = 0; i < storage._objects.length; i++) {
+    const cityName = storage._objects[i].properties._data.hintContent;
+    for (let j = i + 1; j < storage._objects.length; j++) {
+      const nameCity = storage._objects[j].properties._data.hintContent;
+      if (cityName === nameCity) {
+        myMap.geoObjects.remove(storage._objects[j]);
+        storage = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
+      }
+    }
+  }
+};
+
 // Функция инициализации карты
 const init = () => {
   myMap = new ymaps.Map('weather-map', {
@@ -51,7 +65,7 @@ const init = () => {
 
         // Добавление меток в выборку, с последующим добавлением на карту
         storagePlacemarks = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
-
+        deleteDuplicatePlacemarks(storagePlacemarks);
         // Центрирование всех меток на экране
         myMap.setBounds(myMap.geoObjects.getBounds(), {
           checkZoomRange: true,
@@ -106,6 +120,7 @@ const init = () => {
       }
     });
   });
+
   // При двойном клике по карте зума не будет
   myMap.events.add('dblclick', (evt) => {
     evt.preventDefault();

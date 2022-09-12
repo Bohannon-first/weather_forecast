@@ -130,36 +130,50 @@ listSmallCardsWeather.addEventListener('drop', (evt) => {
   }
 });
 
+// Удаление дубликатов из списка избранных городов
+const deleteDuplicateCitiesFavorites = (arrayCities) => {
+  for (let i = 0; i < arrayCities.length; i++) {
+    const cityName = arrayCities[i].querySelector('.big-card__city').textContent;
+    for (let j = i + 1; j < arrayCities.length; j++) {
+      const nameCity = arrayCities[j].querySelector('.big-card__city').textContent;
+      if (cityName === nameCity) {
+        arrayCities[j].remove();
+      }
+    }
+  }
+};
+
 // Перемещение элементов внутри избранного
 listBigCardsWeather.addEventListener('dragover', (evt) => {
   evt.preventDefault();
 
-  // // Находим элемент, над которым в данный момент находится курсор
-  // const currentElement = evt.target;
-  // const parentCurrentElement = currentElement.closest('.big-card');
+  // Находим элемент, над которым в данный момент находится курсор
+  if (evt.target.closest('.big-card')) {
+    const currentElement = evt.target.closest('.big-card');
+    const arrayBigCard = document.querySelectorAll('.big-card');
 
-  //   try {
+    try {
+      // Проверяем, что событие сработало:
+      // 1. Не на том элементе, который мы перемещаем,
+      // 2. Именно на элементе списка
+      const isMovable = movableElementToAvailable !== currentElement && currentElement.classList.contains('big-card');
 
-  //     // Проверяем, что событие сработало:
-  //     // 1. не на том элементе, который мы перемещаем,
-  //     // 2. именно на элементе списка
-  //       const isMovable = movableElementToAvailable !== parentCurrentElement && parentCurrentElement.classList.contains('big-card');
+      // Если нет, прерываем выполнение функции
+      if (!isMovable) {
+        return false;
+      }
 
-  //       // Если нет, прерываем выполнение функции
-  //       if (!isMovable) {
-  //         return;
-  //       }
+      // Находим элемент, перед которым будем вставлять
+      const nextElement = (currentElement === movableElementToAvailable.nextElementSibling) ?
+        currentElement.nextElementSibling :
+        currentElement;
+      deleteDuplicateCitiesFavorites(arrayBigCard);
+      listBigCardsWeather.insertBefore(movableElementToAvailable, nextElement);
 
-  //       // Находим элемент, перед которым будем вставлять
-  //       const nextElement = (parentCurrentElement === movableElementToAvailable.nextElementSibling) ?
-  //         parentCurrentElement.nextElementSibling :
-  //         parentCurrentElement;
-
-  //       listBigCardsWeather.insertBefore(movableElementToAvailable, nextElement);
-
-  //   } catch (err) {
-  //     // Комментарий, чтобы eslint не ругался на пустой блок
-  //   }
+    } catch (err) {
+      // Комментарий, чтобы eslint не ругался на пустой блок
+    }
+  }
 });
 
 // Удаление дубликатов из списка доступных городов
