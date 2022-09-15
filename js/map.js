@@ -24,6 +24,14 @@ let storagePlacemarks = null;
 // Карта
 let myMap = null;
 
+// Кнопка закрытия подсказки на карте
+const btnCloseHintOnMap = document.querySelector('#button-close-hint');
+
+// Появление через промежуток времени подсказки на карте об использовании поиска
+setTimeout(() => {
+  document.querySelector('.weather-app__map__hint').style.display = 'flex';
+}, 3000);
+
 // Удаление дубликатов меток с карты
 const deleteDuplicatePlacemarks = (storage) => {
   for (let i = 0; i < storage._objects.length; i++) {
@@ -43,7 +51,7 @@ const init = () => {
   myMap = new ymaps.Map('weather-map', {
     center: [COORDINATES_MAIN_CITY.latitude, COORDINATES_MAIN_CITY.longitude],
     zoom: MAIN_ZOOM,
-    controls: []
+    controls: ['zoomControl']
   });
 
   // Добавление меток на карту
@@ -127,6 +135,10 @@ const init = () => {
   });
 };
 
+// Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
+// eslint-disable-next-line no-undef
+ymaps.ready(init);
+
 // Функция удаления меток с карты
 const removePlacemark = (element, storage) => {
   const cityName = element.querySelector('.big-card__city').textContent;
@@ -170,8 +182,14 @@ const isOnePlacemark = (storage, map) => {
   }
 };
 
-// Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
-// eslint-disable-next-line no-undef
-ymaps.ready(init);
+// Удаление подсказки с карты об использовании поиска
+const closeHintOnMap = () => {
+  document.querySelector('.weather-app__map__hint').style.animation = 'hiddenHintOnMap 400ms';
+  setTimeout(() => {
+    document.querySelector('.weather-app__map__hint').style.display = 'none';
+  }, 400);
+};
 
-export {storagePlacemarks, removePlacemark, isOnePlacemark, myMap};
+btnCloseHintOnMap.addEventListener('click', closeHintOnMap);
+
+export {storagePlacemarks, removePlacemark, isOnePlacemark, myMap, MAIN_PIN, SECOND_PIN, MAIN_ZOOM, closeHintOnMap};
