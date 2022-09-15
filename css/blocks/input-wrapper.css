@@ -13,6 +13,7 @@
 .input-wrapper--search input {
   width: 254px;
   padding: 8px 20px;
+  padding-right: 28px;
 
   color: var(--color-text-input);
 
@@ -117,12 +118,6 @@
 
   pointer-events: none;
 }
-
-/* .input-wrapper--radio input:checked + label,
-.input-wrapper--checkbox input:checked + label {
-  background-color: var(--color-label-active);
-  box-shadow: none;
-} */
 
 .input-wrapper--radio input:checked + label {
   background-color: var(--color-label-active);

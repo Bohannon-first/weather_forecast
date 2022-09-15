@@ -2,7 +2,7 @@ import {listSmallCardsWeather} from './available-cities.js';
 import {arrayDataCities} from './server.js';
 import {convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather} from './util.js';
 import {getSortedListAlphabet, getSortedListAlphabetReverse} from './sorting.js';
-import {storagePlacemarks, removePlacemark, isOnePlacemark, myMap} from './map.js';
+import {storagePlacemarks, removePlacemark, isOnePlacemark, myMap, MAIN_PIN, SECOND_PIN, MAIN_ZOOM} from './map.js';
 
 // Количество пикселей при прокрутке вниз при добавлении городов в избранное
 const SCROLLING_PIXELS_BY_VERTICAL = 9999;
@@ -130,36 +130,50 @@ listSmallCardsWeather.addEventListener('drop', (evt) => {
   }
 });
 
+// Удаление дубликатов из списка избранных городов
+const deleteDuplicateCitiesFavorites = (arrayCities) => {
+  for (let i = 0; i < arrayCities.length; i++) {
+    const cityName = arrayCities[i].querySelector('.big-card__city').textContent;
+    for (let j = i + 1; j < arrayCities.length; j++) {
+      const nameCity = arrayCities[j].querySelector('.big-card__city').textContent;
+      if (cityName === nameCity) {
+        arrayCities[j].remove();
+      }
+    }
+  }
+};
+
 // Перемещение элементов внутри избранного
 listBigCardsWeather.addEventListener('dragover', (evt) => {
   evt.preventDefault();
 
-  // // Находим элемент, над которым в данный момент находится курсор
-  // const currentElement = evt.target;
-  // const parentCurrentElement = currentElement.closest('.big-card');
+  // Находим элемент, над которым в данный момент находится курсор
+  if (evt.target.closest('.big-card')) {
+    const currentElement = evt.target.closest('.big-card');
+    const arrayBigCard = document.querySelectorAll('.big-card');
 
-  //   try {
+    try {
+      // Проверяем, что событие сработало:
+      // 1. Не на том элементе, который мы перемещаем,
+      // 2. Именно на элементе списка
+      const isMovable = movableElementToAvailable !== currentElement && currentElement.classList.contains('big-card');
 
-  //     // Проверяем, что событие сработало:
-  //     // 1. не на том элементе, который мы перемещаем,
-  //     // 2. именно на элементе списка
-  //       const isMovable = movableElementToAvailable !== parentCurrentElement && parentCurrentElement.classList.contains('big-card');
+      // Если нет, прерываем выполнение функции
+      if (!isMovable) {
+        return false;
+      }
 
-  //       // Если нет, прерываем выполнение функции
-  //       if (!isMovable) {
-  //         return;
-  //       }
+      // Находим элемент, перед которым будем вставлять
+      const nextElement = (currentElement === movableElementToAvailable.nextElementSibling) ?
+        currentElement.nextElementSibling :
+        currentElement;
+      deleteDuplicateCitiesFavorites(arrayBigCard);
+      listBigCardsWeather.insertBefore(movableElementToAvailable, nextElement);
 
-  //       // Находим элемент, перед которым будем вставлять
-  //       const nextElement = (parentCurrentElement === movableElementToAvailable.nextElementSibling) ?
-  //         parentCurrentElement.nextElementSibling :
-  //         parentCurrentElement;
-
-  //       listBigCardsWeather.insertBefore(movableElementToAvailable, nextElement);
-
-  //   } catch (err) {
-  //     // Комментарий, чтобы eslint не ругался на пустой блок
-  //   }
+    } catch (err) {
+      // Комментарий, чтобы eslint не ругался на пустой блок
+    }
+  }
 });
 
 // Удаление дубликатов из списка доступных городов
@@ -192,7 +206,7 @@ const removeCardFavouriteCity = (evt) => {
           // Центровка карты по всем точкам
           myMap.setBounds(myMap.geoObjects.getBounds(), {
             checkZoomRange: true,
-            zoomMargin: 20
+            zoomMargin: 30
           });
         } catch (err) {
           // Комментарий, чтобы eslint не ругался на пустой блок
@@ -214,7 +228,7 @@ const highlightCityOnMapTurnedOn = (evt) => {
     const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
     storagePlacemarks._objects.forEach((object) => {
       if (bigCardNameCity === object.properties._data.hintContent) {
-        object.options.set('iconImageHref', './img/icon/icon-pin-red.png');
+        object.options.set('iconImageHref', SECOND_PIN);
       }
     });
   }
@@ -228,7 +242,7 @@ const highlightCityOnMapTurnedOff = (evt) => {
     const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
     storagePlacemarks._objects.forEach((object) => {
       if (bigCardNameCity === object.properties._data.hintContent) {
-        object.options.set('iconImageHref', './img/icon/icon-pin-blue.png');
+        object.options.set('iconImageHref', MAIN_PIN);
       }
     });
   }
@@ -239,10 +253,13 @@ listBigCardsWeather.addEventListener('mouseout', highlightCityOnMapTurnedOff);
 // Центрирование маркера на карте при клике на городе в избранном
 const getCenterOnMapClick = (evt) => {
   if (evt.target.closest('.big-card')) {
+    if (evt.target.closest('#close-big-card')) {
+      return false;
+    }
     const bigCardNameCity = evt.target.closest('.big-card').querySelector('.big-card__city').textContent;
     storagePlacemarks._objects.forEach((object) => {
       if (bigCardNameCity === object.properties._data.hintContent) {
-        myMap.setCenter([object.geometry._coordinates[0], object.geometry._coordinates[1]], 10, {
+        myMap.setCenter([object.geometry._coordinates[0], object.geometry._coordinates[1]], MAIN_ZOOM, {
           checkZoomRange: true
         });
       }

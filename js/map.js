@@ -24,12 +24,34 @@ let storagePlacemarks = null;
 // Карта
 let myMap = null;
 
+// Кнопка закрытия подсказки на карте
+const btnCloseHintOnMap = document.querySelector('#button-close-hint');
+
+// Появление через промежуток времени подсказки на карте об использовании поиска
+setTimeout(() => {
+  document.querySelector('.weather-app__map__hint').style.display = 'flex';
+}, 3000);
+
+// Удаление дубликатов меток с карты
+const deleteDuplicatePlacemarks = (storage) => {
+  for (let i = 0; i < storage._objects.length; i++) {
+    const cityName = storage._objects[i].properties._data.hintContent;
+    for (let j = i + 1; j < storage._objects.length; j++) {
+      const nameCity = storage._objects[j].properties._data.hintContent;
+      if (cityName === nameCity) {
+        myMap.geoObjects.remove(storage._objects[j]);
+        storage = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
+      }
+    }
+  }
+};
+
 // Функция инициализации карты
 const init = () => {
   myMap = new ymaps.Map('weather-map', {
     center: [COORDINATES_MAIN_CITY.latitude, COORDINATES_MAIN_CITY.longitude],
     zoom: MAIN_ZOOM,
-    controls: []
+    controls: ['zoomControl']
   });
 
   // Добавление меток на карту
@@ -51,7 +73,7 @@ const init = () => {
 
         // Добавление меток в выборку, с последующим добавлением на карту
         storagePlacemarks = ymaps.geoQuery(myMap.geoObjects).addToMap(myMap);
-
+        deleteDuplicatePlacemarks(storagePlacemarks);
         // Центрирование всех меток на экране
         myMap.setBounds(myMap.geoObjects.getBounds(), {
           checkZoomRange: true,
@@ -106,11 +128,16 @@ const init = () => {
       }
     });
   });
+
   // При двойном клике по карте зума не будет
   myMap.events.add('dblclick', (evt) => {
     evt.preventDefault();
   });
 };
+
+// Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
+// eslint-disable-next-line no-undef
+ymaps.ready(init);
 
 // Функция удаления меток с карты
 const removePlacemark = (element, storage) => {
@@ -155,8 +182,14 @@ const isOnePlacemark = (storage, map) => {
   }
 };
 
-// Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
-// eslint-disable-next-line no-undef
-ymaps.ready(init);
+// Удаление подсказки с карты об использовании поиска
+const closeHintOnMap = () => {
+  document.querySelector('.weather-app__map__hint').style.animation = 'hiddenHintOnMap 400ms';
+  setTimeout(() => {
+    document.querySelector('.weather-app__map__hint').style.display = 'none';
+  }, 400);
+};
 
-export {storagePlacemarks, removePlacemark, isOnePlacemark, myMap};
+btnCloseHintOnMap.addEventListener('click', closeHintOnMap);
+
+export {storagePlacemarks, removePlacemark, isOnePlacemark, myMap, MAIN_PIN, SECOND_PIN, MAIN_ZOOM, closeHintOnMap};
