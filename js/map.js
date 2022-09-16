@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import {listBigCardsWeather, movableElementToFavorites} from './favorites-cities.js';
 import {arrayDataCities} from './server.js';
+import {searchCity} from './search.js';
 
 // Координаты города по умолчанию и когда нет меток на карте
 const COORDINATES_MAIN_CITY = {
@@ -29,8 +30,13 @@ const btnCloseHintOnMap = document.querySelector('#button-close-hint');
 
 // Появление через промежуток времени подсказки на карте об использовании поиска
 setTimeout(() => {
-  document.querySelector('.weather-app__map__hint').style.display = 'flex';
-}, 3000);
+  // Проверка, если поиск спрятан (на палец не нажали), то показать подсказку
+  if (window.getComputedStyle(searchCity).transform.includes(-350)) {
+    document.querySelector('.weather-app__map__hint').style.display = 'flex';
+  } else {
+    return false;
+  }
+}, 5000);
 
 // Удаление дубликатов меток с карты
 const deleteDuplicatePlacemarks = (storage) => {
