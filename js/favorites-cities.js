@@ -121,7 +121,6 @@ listSmallCardsWeather.addEventListener('drop', (evt) => {
       } catch (err) {
         // Комментарий, чтобы eslint не ругался на пустой блок
       }
-      // console.log(myMap.geoObjects);
       getSortedListAlphabet();
       getSortedListAlphabetReverse();
     } catch (err) {

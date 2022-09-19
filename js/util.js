@@ -22,7 +22,6 @@ const showAlert = () => {
   }, ALERT_SHOW_TIME);
 };
 
-
 // Конвертация из Кельвина в Цельсий
 const convertToCelsius = (valueKelvin) => {
   const celsius = Math.round(valueKelvin - 273.15);
@@ -50,10 +49,10 @@ const renderIconWeather = function (city) {
   if (city.weather[0].main === 'Rain') {return 'rainy';}
   if (city.weather[0].main === 'Snow') {return 'snowy';}
   if (city.weather[0].main === 'Thunderstorm') {return 'stormy';}
-  if (city.weather[0].description === 'туман') {return 'mist';}
+  if (city.weather[0].description === 'туман' || city.weather[0].description === 'плотный туман') {return 'mist';}
 };
 
 // Получение описания погоды
 const getDescriptionWeather = (city) => city.weather[0].description;
 
-export {showAlert, convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather};
+export {showAlert, convertToCelsius, getWindDirection, renderIconWeather, getDescriptionWeather, ALERT_SHOW_TIME};

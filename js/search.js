@@ -1,4 +1,7 @@
 import {closeHintOnMap} from './map.js';
+import {searchNewCity} from './server.js';
+import {listSmallCardsWeather} from './available-cities.js';
+import {convertToCelsius} from './util.js';
 
 const searchInput = document.querySelector('#search');
 const btnResetValue = document.querySelector('#reset-value');
@@ -11,10 +14,10 @@ const globalSearchBtnResetValue = formGlobalSearch.querySelector('.button--reset
 // Кнопка(палец вправо) появления поля для поиска города
 const btnShowSearch = document.querySelector('.weather-app__map__button-show-search');
 const searchCity = document.querySelector('.weather-app__map__form-container');
-const searchCityInput = searchCity.querySelector('.weather-app__map__input');
+const btnSearchCity = searchCity.querySelector('.weather-app__map__button');
 
 // Шаблон регулярного выражения для проверки названий городов
-const templateSearchCity = /^[а-яё-]{0,}$/gi;
+const templateSearchCity = /^[а-яё-\s]{0,}$/gi;
 
 // Функция поиска городов
 const findCity = () => {
@@ -58,11 +61,13 @@ const showSearchOnMap = () => {
     closeHintOnMap();
     searchCity.style.animation = 'showSearchCity 400ms forwards';
     btnShowSearch.style.animation = 'turnFingerLeft 800ms forwards';
+    btnShowSearch.setAttribute('title', 'Скрыть поиск');
   } else {
     searchCity.style.animation = 'hiddenSearchCity 400ms forwards';
-    searchCityInput.value = '';
+    formGlobalSearchInput.value = '';
     btnShowSearch.style.animation = 'turnFingerRight 800ms forwards';
     globalSearchBtnResetValue.style.display = 'none';
+    btnShowSearch.setAttribute('title', 'Показать поиск');
   }
 };
 
@@ -104,4 +109,29 @@ const resetValueOnGlobalSearch = () => {
 
 globalSearchBtnResetValue.addEventListener('click', resetValueOnGlobalSearch);
 
-export {searchCity};
+// Получаем новый город через глобальный поиск
+const getNewCitySearch = (city) => {
+  // Создаем разметку для города
+  const getCity = `<div class="small-card small-card--new-city" draggable="true">
+                    <span class="small-card__city">${city.name}</span>
+                    <span class="small-card__temperature">${convertToCelsius(city.main.temp)}&#176;</span>
+                    <span class="icon icon--strips-small"></span>
+                  </div>`;
+
+  listSmallCardsWeather.insertAdjacentHTML('afterbegin', getCity);
+};
+
+// Обработчик клика по кнопке глобального поиска города
+setTimeout(()=> {
+  btnSearchCity.addEventListener('click', searchNewCity);
+}, 0);
+
+// Отправка запроса по нажатии на enter в поле ввода
+formGlobalSearchInput.addEventListener('keydown', (evt) => {
+  if (evt.keyCode === 13) {
+    evt.preventDefault();
+    searchNewCity();
+  }
+});
+
+export {searchCity, formGlobalSearchInput, getNewCitySearch, resetValueOnGlobalSearch, btnSearchCity};

@@ -37,6 +37,11 @@
   --color-icon-orange: #ffa215;
 
   --color-border: #c3d0e7;
+  --color-border-exist: #f20b50;
+
+  --color-popup-success: #52bb53;
+  --color-popup-error: #f50101;
+  --color-popup-exist: #659ad7;
 
   --transition-base: 0.15s ease-in-out;
 }

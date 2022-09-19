@@ -56,7 +56,6 @@ input[type="search"]::-webkit-search-results-decoration {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   margin: 0;
-
   appearance: none;
 }
 
@@ -82,6 +81,11 @@ button,
 /* Убрать копирайт с карты */
 [class*="copyrights-pane"] {
   display: none !important;
+}
+
+/* Подвинуть ползунок масштаба на карте */
+[class*="controls__control"] {
+  top: 300px !important;
 }
 
 .visually-hidden {

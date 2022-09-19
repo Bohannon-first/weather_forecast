@@ -14,13 +14,10 @@
   width: 254px;
   padding: 8px 20px;
   padding-right: 28px;
-
   color: var(--color-text-input);
-
   background-color: var(--color-input-base);
   border: none;
   outline: none;
-
   transition: background-color var(--transition-base);
 }
 
@@ -59,14 +56,11 @@
   align-items: center;
   width: 40px;
   height: 40px;
-
   background-color: var(--color-label-base);
   border-radius: 2px;
   cursor: pointer;
-
   transition: background-color var(--transition-base),
   box-shadow var(--transition-base);
-
   user-select: none;
 }
 
@@ -99,11 +93,9 @@
 .input-wrapper--radio input,
 .input-wrapper--checkbox input {
   position: absolute;
-
   width: 1px;
   height: 1px;
   margin: -1px;
-
   clip: rect(0 0 0 0);
 }
 
@@ -115,7 +107,6 @@
 .input-wrapper--radio input:disabled + label,
 .input-wrapper--checkbox input:disabled + label {
   opacity: 0.5;
-
   pointer-events: none;
 }
 

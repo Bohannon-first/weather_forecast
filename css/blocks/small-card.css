@@ -3,19 +3,16 @@
   align-items: center;
   width: 350px;
   padding: 16px 20px;
-
   background-color: var(--color-light-grey);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
-
+  box-sizing: border-box;
   transition: background-color var(--transition-base), filter var(--transition-base);
 }
 
 .small-card:hover {
   background-color: var(--color-blue-light);
-  /* background-color: var(--color-blue-deep); */
-  /* background-color: red; */
 }
 
 .small-card:hover .small-card__city,
@@ -26,17 +23,14 @@
 .small-card__city {
   flex-grow: 1;
   margin-right: 20px;
-
   transition: color var(--transition-base);
 }
 
 .small-card__temperature {
   margin-right: 20px;
-
   font-size: 24px;
   line-height: 24px;
   letter-spacing: -0.02em;
-
   transition: color var(--transition-base);
 }
 
@@ -60,4 +54,22 @@
   min-height: 56px;
   background-color: rgba(247, 248, 255, 0.3);
   border: 2px dashed var(--color-border);
+}
+
+/* Рамка для нового добавленного города */
+.small-card--new-city {
+  border: 4px groove var(--color-blue-light);
+  transform: translateY(-64px);
+  animation: showSmallCardCity 400ms forwards;
+}
+
+/* Анимация добавления нового города в общий список */
+@keyframes showSmallCardCity {
+  0% {transform: translateY(-64px);}
+  100% {transform: translateY(0);}
+}
+
+/* Рамка для уже имеющегося города в общем списке*/
+.small-card--city-exist {
+  border: 4px groove var(--color-border-exist);
 }

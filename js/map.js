@@ -142,7 +142,6 @@ const init = () => {
 };
 
 // Статической функцией ready при успешной загрузке API и DOM вызываем коллбэк
-// eslint-disable-next-line no-undef
 ymaps.ready(init);
 
 // Функция удаления меток с карты
