@@ -5,7 +5,6 @@
   flex-shrink: 0;
   width: 24px;
   height: 24px;
-
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -14,28 +13,24 @@
 .icon--arrow-down {
   width: 20px;
   height: 22px;
-
   background-image: url("../../img/icon/icon-arrow-down.svg");
 }
 
 .icon--arrow-up {
   width: 20px;
   height: 22px;
-
   background-image: url("../../img/icon/icon-arrow-up.svg");
 }
 
 .icon--strips-small {
   width: 6px;
   height: 16px;
-
   background-image: url("../../img/icon/icon-strips-small.svg");
 }
 
 .icon--strips-big {
   width: 6px;
   height: 22px;
-
   background-image: url("../../img/icon/icon-strips-big.svg");
 }
 

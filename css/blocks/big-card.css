@@ -5,11 +5,9 @@
   align-items: center;
   width: 350px;
   min-height: 172px;
-
   border-radius: 2px;
   outline: none;
   cursor: pointer;
-
   transition: filter var(--transition-base);
 }
 
@@ -22,18 +20,14 @@
   align-items: center;
   width: 100%;
   padding: 20px 20px 14px 20px;
-
   background-color: var(--color-white);
-
   transition: background-color var(--transition-base);
 }
 
 .big-card__city {
   margin-left: 20px;
-
   font-size: 30px;
   line-height: 36px;
-
   transition: color var(--transition-base);
 }
 
@@ -42,9 +36,7 @@
   align-items: center;
   width: 100%;
   padding: 16px 24px 24px 20px;
-
   background-color: var(--color-light-grey);
-
   transition: background-color var(--transition-base);
 }
 
@@ -72,23 +64,17 @@
 
 .big-card__wind-info {
   margin-left: 10px;
-
   color: var(--color-text-light-blue);
-
   opacity: 0.8;
-
   transition: color var(--transition-base);
 }
 
 .big-card__temperature {
   margin-left: auto;
-
   font-size: 64px;
   line-height: 62px;
   letter-spacing: -0.05em;
-
   opacity: 0.8;
-
   transition: color var(--transition-base);
 }
 
@@ -181,7 +167,6 @@
 
 [id="close-big-card"]:hover::before {
   animation: increaseBtnCloseBefore 0.2s forwards;
-
 }
 
 [id="close-big-card"]:hover::after {
@@ -198,7 +183,7 @@
   opacity: .2;
 }
 
-/* Анимация увеличения кнопки закрытия(крестика) при наведении */
+/* Анимация увеличения кнопки закрытия(крестика) при наведении курсора */
 @keyframes increaseBtnCloseBefore {
   0% {transform: rotate(45deg) scale(1);}
   100% {transform: rotate(45deg) scale(1.5);}
